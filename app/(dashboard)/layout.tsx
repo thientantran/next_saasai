@@ -1,3 +1,4 @@
+import Navbar from '@/components/Navbar'
 import React from 'react'
 
 export default function DashboardLayyout({ children }: { children: React.ReactNode }) {
@@ -10,6 +11,7 @@ export default function DashboardLayyout({ children }: { children: React.ReactNo
         </div>
       </div>
       <main className='md:pl-72'>
+        <Navbar />
         {children}
       </main>
     </div>
