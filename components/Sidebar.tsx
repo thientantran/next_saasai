@@ -65,7 +65,7 @@ export default function Sidebar() {
           </div>
           <h1 className={cn("text-2l font-bold", poppins.className)}>
             {/* kết hợp class để sử dụng font chữ */}
-            Genius
+            AI of Ghost Coder
           </h1>
         </Link>
         <div className="space-y-1">
