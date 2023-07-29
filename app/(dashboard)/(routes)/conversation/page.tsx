@@ -1,7 +1,7 @@
 'use client'
 import Heading from "@/components/Heading"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MessageSquare } from "lucide-react"
@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form"
 import * as z from 'zod'
 const formSchema = z.object({
   prompt: z.string().min(10, {
-    message: "Prompt is required."
+    message: "Prompt need more 10 characters"
   })
 })
 export default function PageConversation() {
@@ -49,8 +49,10 @@ export default function PageConversation() {
                 {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
+
           />
         <Button className="col-span-12 lg:col-span-2 w-full" type="submit" disabled={isLoading} size='icon'>
           Generate
