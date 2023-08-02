@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { MessageSquare } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { ChatCompletionRequestMessage } from "openai"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from 'zod'
 const formSchema = z.object({
@@ -13,6 +17,8 @@ const formSchema = z.object({
   })
 })
 export default function PageConversation() {
+  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -22,10 +28,21 @@ export default function PageConversation() {
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const userMessage: ChatCompletionRequestMessage = { role: 'user', content: values.prompt }
+      const newMessages = [...messages, userMessage];
+      const response = await axios.post("api/conversation", {
+        messages: newMessages
+      });
+      setMessages((current) => [...current, userMessage, response.data])
+      form.reset()
+    } catch (error) {
+      console.log(error);
+    } finally {
+      router.refresh()
+    }
   }
-
   return (
     <>
       <Heading title="Conversation"
@@ -61,7 +78,13 @@ export default function PageConversation() {
           </Form>
         </div>
         <div className="space-y-4 mt-4">
-          Messages Content
+          <div className="flex flex-col-reverse gap-y-4">
+            {messages.map((message) => (
+              <div key={message.content}>
+                {message.content}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
