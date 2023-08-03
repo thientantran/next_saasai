@@ -1,4 +1,5 @@
 'use client'
+import Empty from "@/components/Empty"
 import Heading from "@/components/Heading"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
@@ -78,6 +79,11 @@ export default function PageConversation() {
           </Form>
         </div>
         <div className="space-y-4 mt-4">
+          {messages.length === 0 && !isLoading && (
+            <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+              <Empty label="No conversation started." />
+            </div>
+          )}
           <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message) => (
               <div key={message.content}>
