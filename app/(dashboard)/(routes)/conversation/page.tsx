@@ -1,10 +1,13 @@
 'use client'
+import { BotAvatar } from "@/components/BotAvatar"
 import Empty from "@/components/Empty"
 import Heading from "@/components/Heading"
 import Loader from "@/components/Loader"
+import UserAvatar from "@/components/UserAvatar"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { MessageSquare } from "lucide-react"
@@ -93,7 +96,8 @@ export default function PageConversation() {
           )}
           <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message) => (
-              <div key={message.content}>
+              <div key={message.content} className={cn('p-8 w-full flex items-start gap-x-8 rounded-lg', message.role === 'user' ? 'bg-white border border-black/10' : 'bg-muted')}>
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 {message.content}
               </div>
             ))}
