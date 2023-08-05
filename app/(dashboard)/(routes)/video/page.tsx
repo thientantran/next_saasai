@@ -6,19 +6,18 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
-import { Music } from "lucide-react"
+import { FileAudio } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from 'zod'
 const formSchema = z.object({
   prompt: z.string().min(10, {
-    message: "Music need more 10 characters"
+    message: "Prompt need more 10 characters"
   })
 })
 export default function PageConversation() {
-  const [music, setMusic] = useState<string>()
+  const [video, setVideo] = useState<string>()
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,11 +30,7 @@ export default function PageConversation() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setMusic(undefined)
-      // console.log(values)
-      const response = await axios.post("/api/music", values)
-      setMusic(response.data.audio)
-      console.log(response)
+      console.log(values)
       form.reset()
     } catch (error) {
       console.log(error);
@@ -45,11 +40,11 @@ export default function PageConversation() {
   }
   return (
     <>
-      <Heading title="Music Generation"
-        description="Turn your prompt into music."
-        icon={Music}
-        iconColor="text-emerald-500"
-        bgColor="bg-emerald-500/10" />
+      <Heading title="Video Generation"
+        description="Turn your prompt into Video."
+        icon={FileAudio}
+        iconColor="text-orange-700"
+        bgColor="bg-orange-700/10" />
       <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
@@ -62,7 +57,7 @@ export default function PageConversation() {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="type something about the music song"
+                        placeholder="type something about the video that you wanna create"
                         {...field}
                       />
                     </FormControl>
@@ -84,16 +79,14 @@ export default function PageConversation() {
             </div>
           )}
 
-          {!music && !isLoading && (
+          {!video && !isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
-              <Empty label="No music generated" />
+              <Empty label="No video generated" />
             </div>
           )}
-          {music && (
-            <audio controls className="w-full mt-8">
-              <source src={music}/>
-            </audio>
-          )}
+            <div>
+              video
+            </div>
         </div>
       </div>
     </>
