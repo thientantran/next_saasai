@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { FileAudio } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -30,7 +31,9 @@ export default function PageConversation() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values)
+      setVideo(undefined)
+      const response = await axios.post("/api/video", values)
+      setVideo(response.data[0])
       form.reset()
     } catch (error) {
       console.log(error);
@@ -84,9 +87,11 @@ export default function PageConversation() {
               <Empty label="No video generated" />
             </div>
           )}
-            <div>
-              video
-            </div>
+          {video && (
+            <video controls className="w-full aspect-video mt-8 rounded-lg border bg-black">
+              <source src={video} />
+            </video>
+          )}
         </div>
       </div>
     </>
