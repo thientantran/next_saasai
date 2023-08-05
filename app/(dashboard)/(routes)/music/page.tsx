@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { Music } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -31,10 +32,10 @@ export default function PageConversation() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setMusic(undefined)
-      console.log(values)
-      // const response = await axios.post("/api/music", values)
-      // setMusic(response.data.audio)
-      // console.log(response)
+      // console.log(values)
+      const response = await axios.post("/api/music", values)
+      setMusic(response.data.audio)
+      console.log(response)
       form.reset()
     } catch (error) {
       console.log(error);
@@ -61,7 +62,7 @@ export default function PageConversation() {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="How do I calculate the radius of a circle?"
+                        placeholder="type something about the music song"
                         {...field}
                       />
                     </FormControl>
