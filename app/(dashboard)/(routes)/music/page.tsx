@@ -1,28 +1,23 @@
 'use client'
-import { BotAvatar } from "@/components/BotAvatar"
 import Empty from "@/components/Empty"
 import Heading from "@/components/Heading"
 import Loader from "@/components/Loader"
-import UserAvatar from "@/components/UserAvatar"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
-import { MessageSquare } from "lucide-react"
+import { Music } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { ChatCompletionRequestMessage } from "openai"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from 'zod'
 const formSchema = z.object({
   prompt: z.string().min(10, {
-    message: "Prompt need more 10 characters"
+    message: "Music need more 10 characters"
   })
 })
 export default function PageConversation() {
-  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
+  const [music, setMusic] = useState<string>()
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,12 +30,11 @@ export default function PageConversation() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionRequestMessage = { role: 'user', content: values.prompt }
-      const newMessages = [...messages, userMessage];
-      const response = await axios.post("api/conversation", {
-        messages: newMessages
-      });
-      setMessages((current) => [...current, userMessage, response.data])
+      setMusic(undefined)
+      console.log(values)
+      // const response = await axios.post("/api/music", values)
+      // setMusic(response.data.audio)
+      // console.log(response)
       form.reset()
     } catch (error) {
       console.log(error);
@@ -50,11 +44,11 @@ export default function PageConversation() {
   }
   return (
     <>
-      <Heading title="Conversation"
-        description="Our most advanced conversation model."
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10" />
+      <Heading title="Music Generation"
+        description="Turn your prompt into music."
+        icon={Music}
+        iconColor="text-emerald-500"
+        bgColor="bg-emerald-500/10" />
       <div className="px-4 lg:px-8">
         <div>
           <Form {...form}>
@@ -89,19 +83,16 @@ export default function PageConversation() {
             </div>
           )}
 
-          {messages.length === 0 && !isLoading && (
+          {!music && !isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
-              <Empty label="No conversation started." />
+              <Empty label="No music generated" />
             </div>
           )}
-          <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
-              <div key={message.content} className={cn('p-8 w-full flex items-start gap-x-8 rounded-lg', message.role === 'user' ? 'bg-white border border-black/10' : 'bg-muted')}>
-                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                {message.content}
-              </div>
-            ))}
-          </div>
+          {music && (
+            <audio controls className="w-full mt-8">
+              <source src={music}/>
+            </audio>
+          )}
         </div>
       </div>
     </>
