@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { ImageIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { ChatCompletionRequestMessage } from "openai"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from 'zod'
@@ -59,8 +58,7 @@ const resolutionOptions = [
   },
 ];
 export default function PageImage() {
-  const [images, setImage] = useState<string[]>([]);
-  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
+  const [images, setImages] = useState<string[]>([]);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,13 +73,13 @@ export default function PageImage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionRequestMessage = { role: 'user', content: values.prompt }
-      const newMessages = [...messages, userMessage];
-      const response = await axios.post("api/conversation", {
-        messages: newMessages
-      });
-      setMessages((current) => [...current, userMessage, response.data])
-      form.reset()
+      setImages([]);
+
+      const response = await axios.post("/api/image", values);
+
+      const urls = response.data.map((image: {url:string}) => image.url);
+      setImages(urls)
+      console.log(urls)
     } catch (error) {
       console.log(error);
     } finally {
