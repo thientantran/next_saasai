@@ -1,12 +1,24 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { MAX_FREE_COUNTS } from "@/constants";
 import { Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 interface FreeCounterProps {
   apiLimitCount: number;
 }
 export default function FreeCounter({apiLimitCount=0}:FreeCounterProps) {
+  // có cần thiết ko, vì ko có vẫn chạy được
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div className="px-3">
       <Card className="bg-white/10 border-0">
