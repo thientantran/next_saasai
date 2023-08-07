@@ -1,11 +1,12 @@
 'use client'
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useProModal } from "@/hooks/useProModal";
 import { cn } from "@/lib/utils";
-import { Check, Code, ImageIcon, MessageSquare, Music, VideoIcon } from "lucide-react";
+import { Check, Code, ImageIcon, MessageSquare, Music, VideoIcon, Zap } from "lucide-react";
 
 export const tools = [
   {
@@ -67,6 +68,12 @@ export default function ProModal() {
               ))}
           </DialogDescription>
         </DialogHeader>
+        <DialogFooter>
+          <Button size='lg' variant='premium' className="w-full">
+              Upgrade
+              <Zap className="w-4 h-4 ml-2 fill-white"/>
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
