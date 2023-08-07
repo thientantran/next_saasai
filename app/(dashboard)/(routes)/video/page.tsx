@@ -5,6 +5,7 @@ import Loader from "@/components/Loader"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useProModal } from "@/hooks/useProModal"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { FileAudio } from "lucide-react"
@@ -18,6 +19,7 @@ const formSchema = z.object({
   })
 })
 export default function PageConversation() {
+  const proModel = useProModal()
   const [video, setVideo] = useState<string>()
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,8 +37,10 @@ export default function PageConversation() {
       const response = await axios.post("/api/video", values)
       setVideo(response.data[0])
       form.reset()
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      if(error?.response?.status === 403){
+        proModel.onOpen()
+      }
     } finally {
       router.refresh()
     }
