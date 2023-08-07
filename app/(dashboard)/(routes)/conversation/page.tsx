@@ -7,6 +7,7 @@ import UserAvatar from "@/components/UserAvatar"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useProModal } from "@/hooks/useProModal"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
@@ -22,6 +23,7 @@ const formSchema = z.object({
   })
 })
 export default function PageConversation() {
+  const proModel = useProModal()
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([])
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,8 +44,10 @@ export default function PageConversation() {
       });
       setMessages((current) => [...current, userMessage, response.data])
       form.reset()
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      if(error?.response?.status === 403){
+        proModel.onOpen()
+      }
     } finally {
       router.refresh()
     }
