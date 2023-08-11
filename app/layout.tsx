@@ -1,4 +1,5 @@
 import ModalProvider from "@/components/ModalProvider"
+import { ToasterProvider } from "@/components/ToasterProvider"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -20,6 +21,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <ModalProvider/>
+          <ToasterProvider/>
           {children}
           </body>
       </html>

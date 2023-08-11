@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation"
 import { ChatCompletionRequestMessage } from "openai"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import * as z from 'zod'
 const formSchema = z.object({
   prompt: z.string().min(10, {
@@ -37,6 +38,7 @@ export default function PageConversation() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      // throw new Error("something")
       const userMessage: ChatCompletionRequestMessage = { role: 'user', content: values.prompt }
       const newMessages = [...messages, userMessage];
       const response = await axios.post("api/conversation", {
@@ -47,6 +49,8 @@ export default function PageConversation() {
     } catch (error:any) {
       if(error?.response?.status === 403){
         proModel.onOpen()
+      }else{
+        toast.error("Something went wrong!")
       }
     } finally {
       router.refresh()

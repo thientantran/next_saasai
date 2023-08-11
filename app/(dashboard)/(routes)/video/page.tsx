@@ -12,6 +12,7 @@ import { FileAudio } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import * as z from 'zod'
 const formSchema = z.object({
   prompt: z.string().min(10, {
@@ -40,6 +41,8 @@ export default function PageConversation() {
     } catch (error:any) {
       if(error?.response?.status === 403){
         proModel.onOpen()
+      }else{
+        toast.error("Something went wrong!")
       }
     } finally {
       router.refresh()

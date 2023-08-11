@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation"
 import { ChatCompletionRequestMessage } from "openai"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import ReactMarkdown from "react-markdown"
 import * as z from 'zod'
 const formSchema = z.object({
@@ -48,6 +49,8 @@ export default function PageCode() {
     } catch (error:any) {
       if(error?.response?.status === 403){
         proModel.onOpen()
+      }else{
+        toast.error("Something went wrong!")
       }
     } finally {
       router.refresh()
