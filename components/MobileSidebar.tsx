@@ -9,7 +9,6 @@ interface MobileSidebarProps {
   apiLimitCount: number
 }
 export default function MobileSidebar({apiLimitCount}:MobileSidebarProps) {
-  console.log(apiLimitCount)
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true)
