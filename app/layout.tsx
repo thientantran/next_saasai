@@ -1,3 +1,4 @@
+import CrispProvider from "@/components/CrispProvider"
 import ModalProvider from "@/components/ModalProvider"
 import { ToasterProvider } from "@/components/ToasterProvider"
 import { ClerkProvider } from "@clerk/nextjs"
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <CrispProvider/>
         <body className={inter.className}>
           <ModalProvider/>
           <ToasterProvider/>
