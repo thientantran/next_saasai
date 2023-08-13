@@ -1,12 +1,9 @@
+import LandingNavbar from "@/components/LandingNavbar";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 export default function LandingPage() {
   const { userId } = auth()
-  if(userId){
-    redirect("/dashboard")
-  }
   return (
     <div>Landing Page
       <div>
@@ -21,6 +18,7 @@ export default function LandingPage() {
           </Button>
         </Link>
       </div>
+      <LandingNavbar/>
     </div>
   )
 }
