@@ -1,4 +1,5 @@
 import LandingNavbar from "@/components/LandingNavbar";
+import LandingPageContent from "@/components/LandingPageContent";
 import LandingPageHero from "@/components/LandingPageHero";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs";
@@ -21,6 +22,7 @@ export default function LandingPage() {
       </div>
       <LandingNavbar/>
       <LandingPageHero/>
+      <LandingPageContent/>
     </div>
   )
 }
