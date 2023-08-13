@@ -1,4 +1,5 @@
 import LandingNavbar from "@/components/LandingNavbar";
+import LandingPageHero from "@/components/LandingPageHero";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs";
 import Link from "next/link";
@@ -19,6 +20,7 @@ export default function LandingPage() {
         </Link>
       </div>
       <LandingNavbar/>
+      <LandingPageHero/>
     </div>
   )
 }
